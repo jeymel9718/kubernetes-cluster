@@ -1,0 +1,40 @@
+# https://kubernetes.io/docs/tasks/run-application/run-single-instance-stateful-application/
+kind: Service
+apiVersion: v1
+metadata:
+  name: users-ruby
+  labels:
+    app: users-ruby
+spec:
+  ports:
+    - port: 3000
+  selector:
+    app: users-ruby
+  type: LoadBalancer
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-ruby
+  labels:
+    app: users-ruby
+spec:
+  selector:
+    matchLabels:
+      app: users-ruby
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: users-ruby
+    spec:
+      containers:
+        - image: denporras/soa_user_ruby
+          name: users
+          ports:
+            - containerPort: 3000
+          stdin: true
+
+

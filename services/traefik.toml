@@ -1,0 +1,7 @@
+[web]
+address = ":8080"
+ReadOnly = true
+ 
+[kubernetes]
+# Kubernetes server endpoint
+endpoint = "http://127.0.0.1:8001"

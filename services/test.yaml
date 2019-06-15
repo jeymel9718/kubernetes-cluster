@@ -1,0 +1,40 @@
+# https://kubernetes.io/docs/tasks/run-application/run-single-instance-stateful-application/
+kind: Service
+apiVersion: v1
+metadata:
+  name: samba
+  labels:
+    app: samba
+spec:
+  ports:
+    - port: 8000
+  selector:
+    app: samba
+  type: LoadBalancer
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: samba
+  labels:
+    app: samba
+spec:
+  selector:
+    matchLabels:
+      app: samba
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: samba
+    spec:
+      containers:
+        - image: monicagangwar/docker-swarm-vagrant
+          name: samba
+          ports:
+            - containerPort: 8000
+          stdin: true
+
+

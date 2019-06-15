@@ -1,0 +1,40 @@
+# https://kubernetes.io/docs/tasks/run-application/run-single-instance-stateful-application/
+kind: Service
+apiVersion: v1
+metadata:
+  name: orders-go
+  labels:
+    app: orders-go
+spec:
+  ports:
+    - port: 8080
+  selector:
+    app: orders-go
+  type: LoadBalancer
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orders-go
+  labels:
+    app: orders-go
+spec:
+  selector:
+    matchLabels:
+      app: orders-go
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: orders-go
+    spec:
+      containers:
+        - image: denporras/soa_orders_go
+          name: orders
+          ports:
+            - containerPort: 8080
+          stdin: true
+
+
